@@ -11,36 +11,36 @@ CREATE TABLE products (
   id INTEGER(11) AUTO_INCREMENT NOT NULL,
   product_name VARCHAR(30),
   department_name VARCHAR(30),
-  price INTEGER(10),
+  price DECIMAL(10, 2),
   stock_quanity INTEGER(10),
   PRIMARY KEY (id)
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("Cactus Jack", "Air Jordan", 250, 10);
+VALUES ("Cactus Jack", "Air Jordan", 250.76, 10);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("Sample Lab 1500", "New Balance", 120, 70);
+VALUES ("Sample Lab 1500", "New Balance", 120.76, 70);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES (" React 'Brutal Honey'", "NIKE", 220, 5);
+VALUES (" React 'Brutal Honey'", "NIKE", 220.76, 5);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("SB 'Walk The Dog'", "NIKE", 190, 15);
+VALUES ("SB 'Walk The Dog'", "NIKE", 190.76, 15);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("Future Craft Loop", "Adidas", 300, 14);
+VALUES ("Future Craft Loop", "Adidas", 300.76, 14);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("990v5", "New Balance", 150, 75);
+VALUES ("990v5", "New Balance", 150.76, 75);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("Tailwind 'TEAM ORANGE'", "NIKE", 180, 40);
+VALUES ("Tailwind 'TEAM ORANGE'", "NIKE", 180.76, 40);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("Yeezy Boost 350", "Adidas", 350, 20);
+VALUES ("Yeezy Boost 350", "Adidas", 350.76, 20);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES ("S/LAB XT-4 ADV", "Solomon", 165, 60);
+VALUES ("S/LAB XT-4 ADV", "Solomon", 165.76, 60);
 
 
