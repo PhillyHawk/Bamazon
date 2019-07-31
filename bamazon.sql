@@ -23,7 +23,7 @@ INSERT INTO products (product_name, department_name, price, stock_quanity)
 VALUES ("Sample Lab 1500", "New Balance", 120.76, 70);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
-VALUES (" React 'Brutal Honey'", "NIKE", 220.76, 5);
+VALUES ("React 'Brutal Honey'", "NIKE", 220.76, 5);
 
 INSERT INTO products (product_name, department_name, price, stock_quanity)
 VALUES ("SB 'Walk The Dog'", "NIKE", 190.76, 15);
