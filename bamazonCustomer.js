@@ -29,7 +29,7 @@ var display = function () {
     console.log("Find Your Product Below");
     console.log("");
     var table = new Table({
-      head: ["Product Id", "Product Description", "Cost"],
+      head: ["Product Id", "Product Description", "Cost", "Quantity"],
       colWidths: [12, 50, 8],
       colAligns: ["center", "left", "right"],
       style: {
@@ -38,7 +38,7 @@ var display = function () {
       }
     });
     for (var i = 0; i < res.length; i++) {
-      table.push([res[i].id, res[i].product_name, res[i].price]);
+      table.push([res[i].id, res[i].product_name, res[i].price, res[i].stock_quantity]);
     }
     console.log(table.toString());
     console.log("");
