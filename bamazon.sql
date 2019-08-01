@@ -43,4 +43,7 @@ VALUES ("Yeezy Boost 350", "Adidas", 350.76, 20);
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("S/LAB XT-4 ADV", "Solomon", 165.76, 60);
 
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("Palace Guard OG", "Puma", 185.76, 38);
+
 

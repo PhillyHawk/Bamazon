@@ -25,13 +25,13 @@ var display = function () {
     if (err) throw err;
     console.log("--------------------------------------------------------------------------------------");
     console.log("                        Welcome to Bamazon                                            ".bgCyan.black);
-    console.log("---------------------------------------------------------------------------------------");
+    console.log("--------------------------------------------------------------------------------------");
     console.log("");
-    console.log("Find Your Product Below");
+    console.log("Find Your Product Below".yellow.underline);
     console.log("");
     var table = new Table({
       head: ["Id", "Sneaker Style", "Brand", "Cost", "Quantity"],
-      colWidths: [15, 30, 20, 18],
+      colWidths: [5, 30, 18, 18],
       colAligns: ["center", "left", "right", "left", "center"],
       style: {
         head: ["bgCyan", "black"],
@@ -39,7 +39,7 @@ var display = function () {
       }
     });
     for (var i = 0; i < res.length; i++) {
-      table.push([res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
+      table.push([res[i].id, res[i].product_name, res[i].department_name, "$".green + res[i].price, res[i].stock_quantity]);
     }
     console.log(table.toString());
     console.log("");
@@ -71,7 +71,7 @@ var shopping = function () {
         }).then(function(answer2){
           var quantity = answer2.quantity;
           if (quantity > res[0].stock_quantity) {
-            console.log("Our Apologies we only have " + res[0].stock_quantity + " items of the product selected").red
+            console.log("Our Apologies we only have ".red + res[0].stock_quantity + " items of the product selected".red)
             shopping();
 
           }else{
