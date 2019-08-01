@@ -21,7 +21,7 @@ connection.connect();
 
 
 var display = function () {
-  connection.query("SELECT * FROM products", function (err, res) {
+  connection.query("SELECT * FROM products", function (err, res)  {
     if (err) throw err;
     console.log("--------------------------------------------------------------------------------------");
     console.log("                        Welcome to Bamazon                                            ".bgCyan.black);
@@ -77,7 +77,7 @@ var shopping = function () {
           }else{
             console.log("");
             console.log(res[0].product_name + " purchased");
-            console.log(quantity + " qty @ $" + res[0].price);
+            console.log(quantity + " qty @ $" + (res[0].price * quantity));
 
             var newQuantity = res[0].stock_quantity - quantity;
             connection.query(
@@ -88,6 +88,7 @@ var shopping = function () {
                 console.log("Thank you for Shopping with us....!".green)
                 console.log("");
                 connection.end();
+                
               }
             )
           }
@@ -95,10 +96,10 @@ var shopping = function () {
       }
     });
   });
-
+ 
 };
-
-
-
 display();
+
+
+
 // shopping();

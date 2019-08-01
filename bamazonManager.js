@@ -1,7 +1,10 @@
 var mysql = require("mysql");
+var Table = require('cli-table2');
 var inquirer = require("inquirer");
+var colors = require('colors');
 
-​var connection = mysql.createConnection({
+
+var connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
@@ -15,13 +18,13 @@ var inquirer = require("inquirer");
   database: "bamazon_DB"
 });
 
-​
 connection.connect(function(err) {
   if (err) throw err;
-  runSearch();
+  console.log("=====================================================");
+  runSelected();
 });
-​
-function runSearch() {
+
+function runSelected() {
   inquirer
     .prompt({
       name: "action",
@@ -32,101 +35,59 @@ function runSearch() {
         "View Low Inventory",
         "Add to Inventory",
         "Add New Product",
-        "exit"
+        "End Program"
       ]
-    }).then(function (answer){
-      switch (answer.action){
+    })
+    .then(function(answer) {
+      switch (answer.action) {
         case "View Products for Sale":
-          productSearch();
+          viewProductsForSale();
           break;
 
         case "View Low Inventory":
-          rangeSearch();
+          viewLowInventory();
           break;
 
-        case "exit":
-          connection.end();
-          break;     
+        case "Add to Inventory":
+          addToInventory();
+          break;
+
+        case "Add New Product":
+          addNewProduct();
+          break;
+
+        case "End Program":
+          endProgram();
+          break;
       }
     });
+}
 
-  };
-  function productSearch() {
-    inquirer
-      .prompt({
-        name: "product",
-        type: "input",
-        message: "What product would you like to look for?"
-      })
-      .then(function(answer) {
-        console.log(answer.song);
-        connection.query("SELECT * FROM bamazon WHERE ?", { song: answer.song }, function(err, res) {
-          if (err) throw err;
-          console.log(
-            "Id: " +
-              res[0].id +
-              " || Product: " +
-              res[0].product_name +
-              " || Brand: " +
-              res[0].department_name +
-              " || Quantity: " +
-              res[0].stock_quantity
-          );
-          runSearch();
-        });
-      });
- 
-  }
-  
-  function rangeSearch () {
-    inquirer
-    .prompt([
-      {
-      name: "start",
-      type: "input",
-      message: "Enter starting inventory amount: ",
-      validate: function(value) {
-        if (isNaN(value) === false) {
-          return true;
-        }
-        return false;
+function viewProductsForSale() {
+  connection.query("SELECT * FROM products", function(err, res) {
+    console.log("--------------------------------------------------------------------------------------");
+    console.log("                        Welcome to Bamazon                                            ".bgCyan.black);
+    console.log("--------------------------------------------------------------------------------------");
+    console.log("");
+    console.log("Find Your Product Below".yellow.underline);
+    console.log("");
+    var table = new Table({
+      head: ["Id", "Sneaker Style", "Brand", "Cost", "Quantity"],
+      colWidths: [5, 30, 18, 18],
+      colAligns: ["center", "left", "right", "left", "center"],
+      style: {
+        head: ["bgCyan", "black"],
+        compact: true
       }
-    },
-    {
-        name: "end",
-        type:"input",
-        message: "Enter ending position: ",
-        validate: function(value) {
-          if (isNaN(value) === false){
-            return ture;
-          }
-          return false;
-        }
-      },
-    
-    ])
-    .then(function(answer) {
-      var query = "SELECT Id,product,brand,quantity FROM bamazon WHERE position BETWEEN ? AND ?";
-      connection.query(query, [answer.start, answer.end], function(err, res) {
-        if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-          console.log(
-            "Id: " +
-              res[i].id +
-              " || Product: " +
-              res[i].prduct_name +
-              " || Brand: " +
-              res[i].department_name +
-              " || Quantity: " +
-              res[i].stock_quantity
-          );
-        }
-        runSearch();
-      });
     });
-  }
-    
-  
+    for (var i = 0; i < res.length; i++) {
+      table.push([res[i].id, res[i].product_name, res[i].department_name, "$".green + res[i].price, res[i].stock_quantity]);
+    }
+    console.log(table.toString());
+    console.log("");
+    runSelected();
 
-
   
+  });
+}
+
