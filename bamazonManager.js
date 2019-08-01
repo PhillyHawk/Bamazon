@@ -90,4 +90,24 @@ function viewProductsForSale() {
   
   });
 }
-
+function viewLowInventory() {
+      connection.query("SELECT * FROM products WHERE stock_quantity < 5" , function(err, res) {
+        console.log("Low inventory Report: ");
+        var table = new Table({
+          head: ["Id", "Sneaker Style", "Brand", "Cost", "Quantity"],
+          colWidths: [5, 30, 18, 18],
+          colAligns: ["center", "left", "right", "left", "center"],
+          style: {
+            head: ["bgCyan", "black"],
+            compact: true
+          }
+        });
+        for (var i = 0; i < res.length; i++) {
+          table.push([res[i].id, res[i].product_name, res[i].department_name, "$".green + res[i].price, res[i].stock_quantity]);
+        }
+        console.log(table.toString());
+        console.log("");
+        runSelected();
+        
+ });
+}
