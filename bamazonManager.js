@@ -49,3 +49,25 @@ function runSearch() {
     });
 
   };
+  function productSearch(){
+    inquirer
+      .prompt({
+        name: "product",
+        type: "input",
+        message: "What product would you like to search for?" 
+      })
+      .then(function(answer){
+        var query = "SELECT id, product, brand FROM bamazon WHERE ?";
+        conection.query(query, { product: answer.product 
+      }, function(err, res){
+        if (err) throw err;
+        for (var i= 0; i < res.length; i++) {
+          console.log("Id: " + res[i].id + " || Product: " + res[i].product_name + " || Brand: " + res[i].department_name);
+        }
+        runSearch();
+      });
+    });
+  }
+
+
+  
