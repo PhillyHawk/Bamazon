@@ -69,7 +69,7 @@ function viewProductsForSale() {
     console.log("                        Welcome to Bamazon                                            ".bgCyan.black);
     console.log("--------------------------------------------------------------------------------------");
     console.log("");
-    console.log("Find Your Product Below".yellow.underline);
+    console.log("Products for Sale".yellow.underline);
     console.log("");
     var table = new Table({
       head: ["Id", "Sneaker Style", "Brand", "Cost", "Quantity"],
@@ -92,7 +92,7 @@ function viewProductsForSale() {
 }
 function viewLowInventory() {
       connection.query("SELECT * FROM products WHERE stock_quantity < 5" , function(err, res) {
-        console.log("Low inventory Report: ");
+        console.log("Low inventory Report: ".yellow.yellow.underline);
         var table = new Table({
           head: ["Id", "Sneaker Style", "Brand", "Cost", "Quantity"],
           colWidths: [5, 30, 18, 18],
@@ -111,3 +111,103 @@ function viewLowInventory() {
         
  });
 }
+function validateInteger(input) {
+      var reg = /^\d+$/;
+      return reg.test(input) || "Inputs needs to be a positive number only!";
+  }
+  
+  function addToInventory() {
+  
+      inquirer
+        .prompt([
+          {
+            message: "Enter item id to be update: ",
+            type: "input",
+            name: "id",
+            validate: validateInteger
+          },
+          {
+            message: "Enter amount to adjust inventory: ",
+            type: "input",
+            name: "amount",
+            validate: validateInteger
+          }
+  
+        ]).then(function(input) {
+        		var item = input.id;
+        		var addQuantity = input.amount;
+  
+        		var stringQuery = 'SELECT * FROM products WHERE ?';
+  
+        		connection.query(stringQuery, {id: item}, function(err, results) {
+        			if (err) throw err;
+  
+        			if (results.length === 0) {
+        				console.log('Please enter a valid item id...');
+        				addInventory();
+  
+        			} else {
+        				var widget_item = results[0];
+                console.log('==================================================');
+        				console.log('Updating Inventory...');
+  
+        				var updatedQuery = 'UPDATE products SET stock_quantity = ' + (parseInt(widget_item.stock_quantity) + parseInt(addQuantity)) + ' WHERE id = ' + item;
+  
+        				connection.query(updatedQuery, function(err, results) {
+        					if (err) throw err;
+        					console.log('Item ID: ' + item + ' Updated to: '+ (parseInt(widget_item.stock_quantity) + parseInt(addQuantity)));
+                  console.log('================================================');
+  
+        					runSelected();
+        				})
+        		  }
+        })
+    })
+  }
+  
+  function addNewProduct() {
+    inquirer.prompt([
+      {
+        message: 'Enter name of product: ',
+        type: 'input',
+        name: 'product_name',
+      },
+      {
+        message: 'Enter department: ',
+        type: 'input',
+        name: 'department_name'
+      },
+      {
+        message: 'Enter price: ',
+        type: 'input',
+        name: 'price',
+        validate: validateInteger
+      },
+      {
+        message: 'Enter amount: ',
+        type: 'input',
+        name: 'stock_quantity',
+        validate: validateInteger
+      }
+    ]).then (function (input) {
+        console.log("==========================================================");
+        var query = connection.query(
+          "INSERT INTO products SET ?",
+          {
+              product_name: input.product_name,
+              department_name: input.department_name,
+              price: input.price,
+              stock_quantity: input.stock_quantity
+          },
+          function(err, results) {
+            console.log("Product " + input.product_name + " in the " + input.department_name + " department has been inserted at " + input.price + " dollars and there are " + input.stock_quantity + " of them.");
+            console.log("======================================================");
+            runSelected();
+          })
+  })
+  }
+  
+  function endProgram() {
+    console.log("Thank you user, you are not disconnected...");
+    connection.end();
+  }
