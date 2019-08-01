@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 var Table = require('cli-table2');
 var inquirer = require("inquirer");
+var colors = require('colors');
 
 
 var connection = mysql.createConnection({
@@ -22,23 +23,23 @@ connection.connect();
 var display = function () {
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
-    console.log("-------------------------------");
-    console.log("       Welcome to Bamazon     ");
-    console.log("-------------------------------");
+    console.log("--------------------------------------------------------------------------------------");
+    console.log("                        Welcome to Bamazon                                            ".bgCyan.black);
+    console.log("---------------------------------------------------------------------------------------");
     console.log("");
     console.log("Find Your Product Below");
     console.log("");
     var table = new Table({
-      head: ["Product Id", "Product Description", "Cost", "Quantity"],
-      colWidths: [12, 50, 8],
-      colAligns: ["center", "left", "right"],
+      head: ["Id", "Sneaker Style", "Brand", "Cost", "Quantity"],
+      colWidths: [15, 30, 20, 18],
+      colAligns: ["center", "left", "right", "left", "center"],
       style: {
-        head: ["aqua"],
+        head: ["bgCyan", "black"],
         compact: true
       }
     });
     for (var i = 0; i < res.length; i++) {
-      table.push([res[i].id, res[i].product_name, res[i].price, res[i].stock_quantity]);
+      table.push([res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
     }
     console.log(table.toString());
     console.log("");
@@ -52,30 +53,30 @@ var shopping = function () {
   inquirer.prompt({
     name: "productToBuy",
     type: "input",
-    message: "Please enter the Product Id of the item you'd wish to purchase.!"
+    message: "Please enter the Product Id # of the item you'd wish to purchase.!".cyan
 
   }).then(function (answer1) {
     var selection = answer1.productToBuy;
     connection.query("SELECT * FROM products WHERE ID=?", selection, function (err, res) {
       if (err) throw err;
       if (res.length === 0) {
-        console.log("That Product doesn't exist, Please enter a product Id from the list above.");
+        console.log("That Product doesn't exist, Please enter a product Id from the list above.".red);
 
         shopping();
       } else {
         inquirer.prompt({
           name: "quantity",
           type: "input",
-          message: "how many items would you like to purchase?"
+          message: "how many items would you like to purchase?".cyan
         }).then(function(answer2){
           var quantity = answer2.quantity;
           if (quantity > res[0].stock_quantity) {
-            console.log("Our Apologies we only have " + res[0].stock_quantity + " items of the product selected")
+            console.log("Our Apologies we only have " + res[0].stock_quantity + " items of the product selected").red
             shopping();
 
           }else{
             console.log("");
-            console.log(res[0].stock_quantity + "purchased");
+            console.log(res[0].product_name + " purchased");
             console.log(quantity + " qty @ $" + res[0].price);
 
             var newQuantity = res[0].stock_quantity - quantity;
@@ -83,8 +84,8 @@ var shopping = function () {
               "UPDATE products SET stock_quantity = " + newQuantity + " WHERE id = " +res[0].id, function(err, resUpdate) {
                 if (err) throw err;
                 console.log("");
-                console.log("Your Order has been Processed");
-                console.log("Thank you for Shopping with us....!")
+                console.log("Your Order has been Processed".green);
+                console.log("Thank you for Shopping with us....!".green)
                 console.log("");
                 connection.end();
               }
