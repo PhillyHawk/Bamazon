@@ -17,33 +17,33 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Cactus Jack", "Air Jordan", 250.76, 10);
+VALUES ("Cactus Jack", "Air Jordan", 250.50, 10);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Sample Lab 1500", "New Balance", 120.76, 70);
+VALUES ("Sample Lab 1500", "New Balance", 120.50, 70);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("React 'Brutal Honey'", "NIKE", 220.76, 5);
+VALUES ("React 'Brutal Honey'", "NIKE", 220.50, 5);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("SB 'Walk The Dog'", "NIKE", 190.76, 15);
+VALUES ("SB 'Walk The Dog'", "NIKE", 190.50, 15);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Future Craft Loop", "Adidas", 300.76, 14);
+VALUES ("Future Craft Loop", "Adidas", 300.50, 14);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("990v5", "New Balance", 150.76, 75);
+VALUES ("990v5", "New Balance", 150.50, 75);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Tailwind 'TEAM ORANGE'", "NIKE", 180.76, 40);
+VALUES ("Tailwind 'TEAM ORANGE'", "NIKE", 180.50, 40);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Yeezy Boost 350", "Adidas", 350.76, 20);
+VALUES ("Yeezy Boost 350", "Adidas", 350.50, 20);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("S/LAB XT-4 ADV", "Solomon", 165.76, 60);
+VALUES ("S/LAB XT-4 ADV", "Solomon", 165.50, 60);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Palace Guard OG", "Puma", 185.76, 38);
+VALUES ("Palace Guard OG", "Puma", 185.50, 38);
 
 

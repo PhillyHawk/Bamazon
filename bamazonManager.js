@@ -20,7 +20,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("=====================================================");
+  console.log("=====================================================".yellow);
   runSelected();
 });
 
@@ -29,7 +29,7 @@ function runSelected() {
     .prompt({
       name: "action",
       type: "list",
-      message: "What would you like to do?",
+      message: "What would you like to do?".magenta,
       choices: [
         "View Products for Sale",
         "View Low Inventory",
@@ -110,27 +110,24 @@ function viewLowInventory() {
         runSelected();
         
  });
-}
-function validateInteger(input) {
-      var reg = /^\d+$/;
-      return reg.test(input) || "Inputs needs to be a positive number only!";
-  }
+};
+
   
   function addToInventory() {
   
       inquirer
         .prompt([
           {
-            message: "Enter item id to be update: ",
+            message: "Enter item id to be update: ".cyan,
             type: "input",
             name: "id",
-            validate: validateInteger
+            
           },
           {
-            message: "Enter amount to adjust inventory: ",
+            message: "Enter amount to adjust inventory: ".cyan,
             type: "input",
             name: "amount",
-            validate: validateInteger
+            
           }
   
         ]).then(function(input) {
@@ -139,75 +136,77 @@ function validateInteger(input) {
   
         		var stringQuery = 'SELECT * FROM products WHERE ?';
   
-        		connection.query(stringQuery, {id: item}, function(err, results) {
+        		connection.query(stringQuery, {id: item}, function(err, res) {
         			if (err) throw err;
   
-        			if (results.length === 0) {
-        				console.log('Please enter a valid item id...');
+        			if (res.length === 0) {
+        				console.log('Please enter a valid item id...'.red);
         				addInventory();
   
         			} else {
-        				var widget_item = results[0];
-                console.log('==================================================');
-        				console.log('Updating Inventory...');
+        				var update_item = res[0];
+                console.log('=================================================='.yellow);
+        				console.log('Updating Inventory...'.green);
   
-        				var updatedQuery = 'UPDATE products SET stock_quantity = ' + (parseInt(widget_item.stock_quantity) + parseInt(addQuantity)) + ' WHERE id = ' + item;
+        				var updatedQuery = 'UPDATE products SET stock_quantity = ' + (parseInt(update_item.stock_quantity) + parseInt(addQuantity)) + ' WHERE id = ' + item;
   
-        				connection.query(updatedQuery, function(err, results) {
+        				connection.query(updatedQuery, function(err, res) {
         					if (err) throw err;
-        					console.log('Item ID: ' + item + ' Updated to: '+ (parseInt(widget_item.stock_quantity) + parseInt(addQuantity)));
-                  console.log('================================================');
+        					console.log('Item ID: ' + item + ' Updated to: '+ (parseInt(update_item.stock_quantity) + parseInt(addQuantity)));
+                  console.log('================================================'.yellow);
   
         					runSelected();
-        				})
-        		  }
-        })
+        				});
+        		  };
+        });
+    });
+  };
+
+  
+   function addNewProduct() {
+      inquirer.prompt([
+        {
+          message: 'Enter style of sneaker: '.cyan,
+          type: 'input',
+          name: 'product_name',
+        },
+        {
+          message: 'Enter Brand: '.cyan,
+          type: 'input',
+          name: 'department_name'
+        },
+        {
+          message: 'Enter price: '.cyan,
+          type: 'input',
+          name: 'price',
+          
+        },
+        {
+          message: 'Enter quantity: '.cyan,
+          type: 'input',
+          name: 'stock_quantity',
+         
+        }
+      ]).then (function (input) {
+          console.log("==========================================================".yellow);
+          var query = connection.query(
+            "INSERT INTO products SET ?",
+            {
+                product_name: input.product_name,
+                department_name: input.department_name,
+                price: input.price,
+                stock_quantity: input.stock_quantity
+            },
+            function(err, res) {
+              console.log("Product " + input.product_name + " in the " + input.department_name + " department has been inserted at " +"$".green+ input.price + " dollars and there are " + input.stock_quantity.blue + " of them.");
+              console.log("======================================================".yellow);
+              runSelected();
+            })
     })
-  }
-  
-  function addNewProduct() {
-    inquirer.prompt([
-      {
-        message: 'Enter name of product: ',
-        type: 'input',
-        name: 'product_name',
-      },
-      {
-        message: 'Enter department: ',
-        type: 'input',
-        name: 'department_name'
-      },
-      {
-        message: 'Enter price: ',
-        type: 'input',
-        name: 'price',
-        validate: validateInteger
-      },
-      {
-        message: 'Enter amount: ',
-        type: 'input',
-        name: 'stock_quantity',
-        validate: validateInteger
-      }
-    ]).then (function (input) {
-        console.log("==========================================================");
-        var query = connection.query(
-          "INSERT INTO products SET ?",
-          {
-              product_name: input.product_name,
-              department_name: input.department_name,
-              price: input.price,
-              stock_quantity: input.stock_quantity
-          },
-          function(err, results) {
-            console.log("Product " + input.product_name + " in the " + input.department_name + " department has been inserted at " + input.price + " dollars and there are " + input.stock_quantity + " of them.");
-            console.log("======================================================");
-            runSelected();
-          })
-  })
-  }
-  
-  function endProgram() {
-    console.log("Thank you user, you are not disconnected...");
-    connection.end();
-  }
+    }
+    
+    function endProgram() {
+      console.log("Thank you user, you are now disconnected...".green);
+      connection.end();
+    }
+    
